@@ -9,6 +9,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+//자동임포트 안되서 수기로 작성함
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.is;
+
 // @RunWith 어노테이션은 Junit5부터 @ExtendWith로 변경.
 // @ExtendWith : 테스트 실행시 JUnit에 내장된 실행자 외에 다른 실행자를 실행.
 //  여기서는 SpringExtension 이라는 스프링 실행자를 사용.
@@ -41,5 +46,22 @@ public class HelloControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 // content() : 응답 본문의 내용을 검증
                 .andExpect(MockMvcResultMatchers.content().string(hello));
+    }
+
+    @Test
+    public void helloDto가_리턴된다() throws Exception {
+        String name = "hello";
+        int amount = 1000;
+
+        mvc.perform(get("/hello/dto")
+                // param() : API 테스트할 때 사용될 요청 파라미터를 설정. String만 허용.
+                .param("name", name)
+                .param("amount", String.valueOf(amount)))
+                .andExpect(status().isOk())
+                // jsonPath() : JSON 응답값을 필드별로 검증할 수 있는 메소드. $ 를 기준으로 필드명 명시.
+                .andExpect(jsonPath("$.name", is(name)))
+                .andExpect(jsonPath("$.amount", is(amount))
+                );
+
     }
 }

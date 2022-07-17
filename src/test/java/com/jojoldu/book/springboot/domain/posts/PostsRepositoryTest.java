@@ -1,6 +1,7 @@
 package com.jojoldu.book.springboot.domain.posts;
 
 // 교재에서는 @After을 사용했으나 내가 진행중인 버전에선 @AfterEach로 대체
+import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
 import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.Assertions.assertThat; //수동 import함
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 // 95p.
@@ -51,4 +53,42 @@ public class PostsRepositoryTest {
         assertThat(posts.getTitle()).isEqualTo(title);
         assertThat(posts.getContent()).isEqualTo(content);
     }
+
+    // 122p.
+    @Test
+    public void BaseTimeEntity_등록() {
+        // given
+        LocalDateTime now = LocalDateTime.of(2019,6,4,0,0,0);
+        postsRepository.save(Posts.builder()
+                .title("title")
+                .content("content")
+                .author("author")
+                .build());
+
+        //when
+        List<Posts> postsList = postsRepository.findAll();
+
+        //then
+        Posts posts = postsList.get(0);
+
+        //결과 : >>>>> createDate = 2022-07-17T17:10:38.222, modifiedDate = 2022-07-17T17:10:38.222
+        System.out.println(">>>>> createDate = " + posts.getCreatedDate()
+                + ", modifiedDate = " + posts.getModifiedDate());
+
+        assertThat(posts.getCreatedDate()).isAfter(now);
+        assertThat(posts.getModifiedDate()).isAfter(now);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

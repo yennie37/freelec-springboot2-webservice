@@ -1,5 +1,6 @@
 package com.jojoldu.book.springboot.domain.posts;
 
+import com.jojoldu.book.springboot.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Posts {
+public class Posts extends BaseTimeEntity {
     // @Id : 해당 테이블의 PK 필드 명시.
     // @GeneratedValue : PK 생성 규칙 명시
     // + 웬만하면 Entity의 PK는 Long 타입의 Auto_increment 추천.
@@ -47,4 +48,12 @@ public class Posts {
     // Entity 클래스에서는 Setter 메소드를 만들지 않고, 생성자를 통해 최종값을 채운 후 DB에 삽입.
     // 값 변경이 필요한 경우 해당 이벤트에 맞는 public 메소드를 호출하여 변경.
     // @Builder를 통해 제공되는 빌더 클래스 사용.
+
+    //=====================================================================================
+
+    // 112p.
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

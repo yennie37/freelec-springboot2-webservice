@@ -1,3 +1,6 @@
 # Project exclude paths
 .gradle
 .idea
+
+#commit파일 목록에 안떠야하는데 왜뜨지...?ㅋㅋㅋㅋㅋㅎㅎㅎㅎ...
+application-oauth.properties

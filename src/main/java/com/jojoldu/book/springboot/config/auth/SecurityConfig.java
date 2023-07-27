@@ -1,18 +1,21 @@
 package com.jojoldu.book.springboot.config.auth;
 
+//WebSecurityConfigurerAdapter 가 Deprecated 되었고, Spring Boot 2.0에서는 이를 사용하지 않으므로 SecurityFilterChain로 새로 작성함.
 import com.jojoldu.book.springboot.domain.user.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 
 // 180p.
 @RequiredArgsConstructor
-@EnableWebSecurity // Spring Security 설정들을 활성화시켜줌.
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+//@EnableWebSecurity // Spring Security 설정들을 활성화시켜줌.
+public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             //.csrf().disable().headers().frameOptions().disable()
             // : h2-console 화면을 사용하기 위해 해당 옵션들을 disabled
@@ -41,5 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .userService(customOAuth2UserService);
             // userService : 소셜 로그인 성공 시 후속 조치를 진행할 UserService 인터페이스의 구현체를 등록.
             // 리소스 서버(소셜 서비스)에서 사용자 정보를 가져온 상태에서 추가로 진행하고자 하는 기능을 명시할 수 있음.
+
+        return http.build();
     }
 }

@@ -26,7 +26,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2UserService delegate = new DefaultOAuth2UserService();
+        OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         // registrationId : 현재 로그인 진행 중인 서비스를 구분하는 코드.
@@ -44,8 +44,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         User user = saveOrUpdate(attributes);
         httpSession.setAttribute("user", new SessionUser(user));
         // SessionUser : 세션에 사용자 정보를 저장하기 위한 Dto 클래스.
-        // 왜 User 클래스를 사용하면 안되는가 ?
-        //  : 직렬화를 구현하지 않았다고 에러. User 클래스는 엔티티이므로 언제 다른 엔티티와 관계가 형성될지 모름.
+        // Q. 왜 User 클래스를 사용하면 안되는가 ?
+        //  : 직렬화를 구현하지 않았다고 에러. User 클래스는 '엔티티'이므로 언제 다른 엔티티와 관계가 형성될지 모름.
         //    성능 이슈, 부수 효과가 발생할 확률이 높음.
         //    => 직렬화 기능을 가진 세션 Dto를 하나 추가로 만드는 것이 운영 및 유지보수에 도움이 됨.
 
@@ -54,7 +54,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
-
 
     private User saveOrUpdate(OAuthAttributes attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())

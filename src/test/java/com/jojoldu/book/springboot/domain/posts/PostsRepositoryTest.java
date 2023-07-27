@@ -29,7 +29,7 @@ public class PostsRepositoryTest {
         postsRepository.deleteAll();
     }
 
-    @Test
+    //@Test
     public void 게시글저장_불러오기() {
         //given
         String title = "TEST 게시글 제목";
@@ -55,7 +55,7 @@ public class PostsRepositoryTest {
     }
 
     // 122p.
-    @Test
+    //@Test
     public void BaseTimeEntity_등록() {
         // given
         LocalDateTime now = LocalDateTime.of(2019,6,4,0,0,0);

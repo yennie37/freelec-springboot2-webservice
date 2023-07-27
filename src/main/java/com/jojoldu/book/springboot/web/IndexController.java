@@ -24,6 +24,8 @@ public class IndexController {
         System.out.println("========== IndexController index() 입니다 ==========");
         model.addAttribute("posts", postsService.findAllDesc());
 
+        // 190p. CustomOAuth2UserService에서 로그인 성공시 세션에 SessionUser를 저장하도록 구현함.
+        // => 로그인 성공시 httpSession.getAttribute("user") 로 값을 가져올 수 있음.
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
         if(user != null) {
@@ -33,7 +35,7 @@ public class IndexController {
 
         return "index";
     }
-
+    /*
     @GetMapping("/posts/save")
     public String postsSave() {
         System.out.println("========== IndexController postsSave() 입니다 ==========");
@@ -50,6 +52,7 @@ public class IndexController {
 
         return "posts-update";
     }
+    */
 }
 
 // 132p. 머스테치에 URL 매핑

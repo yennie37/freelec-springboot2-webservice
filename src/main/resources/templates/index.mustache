@@ -26,7 +26,7 @@
                     <a href="/logout" class="btn btn-info active" role="button">Logout</a>
                 {{/userName}}
 
-             <!-- userName이 없는 경우 -->
+                <!-- userName이 없는 경우 -->
                 {{^userName}}
                  <!-- a href="/oauth2/authorization/google" : 스프링 시큐리티에서 기본적으로 제공하는 로그인 URL. 따로 컨트롤러 필요X. -->
                  <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
